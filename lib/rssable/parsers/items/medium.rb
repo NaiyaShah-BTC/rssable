@@ -15,7 +15,14 @@ module RSSable
         #
         # @return [String]
         def description
-          node_text(node.at_xpath("//content:encoded"))
+          # node_text(node.at_xpath("//content:encoded"))
+          content = Nokogiri::HTML node.search("description").first.content
+          content.css("p.medium-feed-snippet").first.content
+        end
+
+        def image
+          content = Nokogiri::HTML node.search("description").first.content
+          content.css("img").attribute("src").try(:value)
         end
       end
     end
